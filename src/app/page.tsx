@@ -1,2 +1,2 @@
-import Panorama from "@/components/panorama";
-export default function Page() { return <Panorama />; }
+import XDNews from "@/components/xd-news";
+export default function Page() { return <XDNews />; }

@@ -1,6 +1,98 @@
-# Panorama — Notícias em português
+![XD News — criado por David Xavier, pela XD Plans](docs/banner.svg)
 
-Leitor editorial independente para portfólio, com integração à API Top Stories do New York Times e tradução sob demanda de títulos e resumos para português brasileiro pelo DeepL. Sem conta, banco de dados ou coleta de dados pessoais. A aplicação não disponibiliza o texto integral das reportagens.
+# XD News — Notícias em português
+
+**Criado por David Xavier, pela XD Plans.**
+
+[Explorar a demonstração online](https://panorama-news.vercel.app) · [Ver o código no GitHub](https://github.com/davidxavierxdplanschat/xd-news)
+
+O mundo acontece. Entenda em português.
+
+## Sobre o projeto
+
+XD News é um leitor editorial de notícias desenvolvido por **David Xavier**, pela **XD Plans**, como parte de sua coletânea de projetos de portfólio. O projeto explora integração com APIs, tradução sob demanda e uma experiência de leitura acessível para quem prefere acompanhar títulos e resumos em português brasileiro.
+
+A aplicação integra a API Top Stories do New York Times e o DeepL, mantém as credenciais no servidor e oferece favoritos locais, busca por categoria e tema escuro. É um projeto independente, sem vínculo oficial com o jornal. A reportagem completa permanece na fonte original.
+
+## Tecnologias
+
+| Parte | Tecnologia |
+| --- | --- |
+| Aplicação | Next.js 16 com App Router |
+| Interface | React 19 e Tailwind CSS 4 |
+| Linguagem | TypeScript em modo estrito |
+| Notícias | API Top Stories do New York Times |
+| Tradução | DeepL API, destino PT-BR |
+| Favoritos e preferências | localStorage |
+| Ícones | Lucide React |
+| Testes | Vitest |
+
+## O que este projeto demonstra
+
+- Integração de APIs externas com normalização de dados e tratamento de erros.
+- Proteção de credenciais e validação de conteúdo no servidor.
+- Cache com expiração e agrupamento de chamadas simultâneas.
+- Tradução sob demanda com preservação do texto original.
+- Interface editorial responsiva e controles acessíveis.
+- Persistência de preferências e testes dos fluxos críticos.
+
+**Status:** implementação, build e 19 testes verificados localmente. O modo demonstração funciona sem credenciais; a autenticação real com NYT e DeepL depende das chaves do responsável pelo deploy. O código está público no GitHub e a demonstração está vinculada à Vercel. O endereço da hospedagem mantém o nome anterior do projeto: a identidade da aplicação agora é XD News.
+
+## Experiência
+
+- Destaques, Mundo, Economia, Tecnologia, Ciência, Cultura, Saúde, Esportes, Gastronomia e Viagem.
+- Busca local nos títulos e resumos originais da categoria carregada. Não é uma pesquisa em todo o acervo do NYT, nem nos textos traduzidos.
+- Uma notícia em destaque, grade editorial e layout adaptado para celular, tablet e desktop.
+- Tradução individual, alternância com o original, estados de progresso e nova tentativa em caso de erro.
+- Favoritos com uma cópia do conteúdo original, persistentes neste navegador mesmo ao trocar de categoria.
+- Tema claro/escuro e categoria preferida no localStorage. Limite de 100 favoritos; adicionar além disso remove o mais antigo.
+- Falhas no armazenamento mantêm dados em memória e mostram um aviso. Não há sincronização entre dispositivos.
+- HTML semântico, foco visível, botão de pular para conteúdo, status acessíveis, redução de animação e diálogo com fechamento por Escape.
+- Imagens ausentes ou que não carregam são substituídas por uma composição editorial. Créditos recebidos da API são preservados.
+
+Favoritos são cópias locais e podem ficar desatualizados. Tradução de uma notícia real salva exige que ela continue na seleção atual da categoria em que foi salva. Se ela sair da API Top Stories, o leitor mantém o original e oferece o link da fonte, mas o servidor recusa uma nova tradução de conteúdo não reconhecido. Conteúdo do jornal pode estar sujeito a assinatura.
+
+## Arquitetura
+
+Next.js App Router com React e TypeScript. Tailwind CSS 4 é carregado via PostCSS; o sistema visual está em `globals.css` com variáveis de cor, tipografia e regras responsivas. As fontes são locais do sistema, sem dependência de serviços externos.
+
+```text
+src/
+  app/
+    api/news/route.ts       GET: valida categoria, busca e normaliza notícias
+    api/translate/route.ts  POST: aceita apenas id e categoria
+    globals.css            sistema visual e responsividade
+    layout.tsx             idioma, metadados e ícone
+    page.tsx               página principal
+    error.tsx              recuperação de erro de renderização
+  components/
+    xd-news.tsx           navegação, busca, favoritos, tema e diálogo
+    article-card.tsx       notícia, imagem, tradução e link da fonte
+  lib/
+    types.ts               contrato de dados e categorias
+    normalize.ts           dados ausentes, URLs seguras e deduplicação
+    cache.ts               cache limitado, expiração e agrupamento de chamadas
+    storage.ts             validação e persistência local
+    demo.ts                histórias e traduções fictícias
+    errors.ts              mensagens públicas de erro
+    server/
+      config.ts            modo e variáveis de ambiente
+      news.ts              integração NYT e cache de notícias
+      deepl.ts             adaptador substituível de tradução
+      translate.ts         reconhecimento, cache e orçamento de tradução
+      limits.ts            limites por janela e instância
+      http.ts              validação HTTP, tamanho e erros
+public/
+  images/                  sete ilustrações vetoriais próprias
+  icon.svg
+docs/
+  banner.svg               identidade do projeto para o GitHub
+  portfolio.md             apresentação para o LinkedIn
+tests/
+  core.test.ts             testes dos fluxos críticos
+```
+
+Os módulos do servidor importam `server-only`, impedindo sua importação acidental por componentes de navegador. A chave do NYT é enviada somente ao host oficial no servidor. A chave do DeepL vai somente no cabeçalho de autenticação. Respostas e erros públicos não incluem chaves nem detalhes de requisições externas. Nenhuma entrada do usuário controla um host externo.
 
 ## Executar
 
@@ -41,59 +133,6 @@ Esses valores são exemplos de configuração, não credenciais reais. Falhas de
 
 O DeepL foi escolhido por oferecer uma API dedicada a tradução com destino `PT-BR`, preservando separadamente o título e o resumo. Não há geração de novos fatos, resumo adicional ou processamento do artigo completo. A tradução automática pode conter imprecisões; o original permanece disponível para comparação. Resultados de demonstração são identificados como exemplos, sem alegar uso de API.
 
-## Experiência
-
-- Destaques, Mundo, Economia, Tecnologia, Ciência, Cultura, Saúde, Esportes, Gastronomia e Viagem.
-- Busca local nos títulos e resumos originais da categoria carregada. Não é uma pesquisa em todo o acervo do NYT, nem nos textos traduzidos.
-- Uma notícia em destaque, grade editorial e layout adaptado para celular, tablet e desktop.
-- Tradução individual, alternância com o original, estados de progresso e nova tentativa em caso de erro.
-- Favoritos com uma cópia do conteúdo original, persistentes neste navegador mesmo ao trocar de categoria.
-- Tema claro/escuro e categoria preferida no localStorage. Limite de 100 favoritos; adicionar além disso remove o mais antigo.
-- Falhas no armazenamento mantêm dados em memória e mostram um aviso. Não há sincronização entre dispositivos.
-- HTML semântico, foco visível, botão de pular para conteúdo, status acessíveis, redução de animação e diálogo com fechamento por Escape.
-- Imagens ausentes ou que não carregam são substituídas por uma composição editorial. Créditos recebidos da API são preservados.
-
-Favoritos são cópias locais e podem ficar desatualizados. Tradução de uma notícia real salva exige que ela continue na seleção atual da categoria em que foi salva. Se ela sair da API Top Stories, o leitor mantém o original e oferece o link da fonte, mas o servidor recusa uma nova tradução de conteúdo não reconhecido. Conteúdo do jornal pode estar sujeito a assinatura.
-
-## Arquitetura
-
-Next.js App Router com React e TypeScript. Tailwind CSS 4 é carregado via PostCSS; o sistema visual está em `globals.css` com variáveis de cor, tipografia e regras responsivas. As fontes são locais do sistema, sem dependência de serviços externos.
-
-```text
-src/
-  app/
-    api/news/route.ts       GET: valida categoria, busca e normaliza notícias
-    api/translate/route.ts  POST: aceita apenas id e categoria
-    globals.css            sistema visual e responsividade
-    layout.tsx             idioma, metadados e ícone
-    page.tsx               página principal
-    error.tsx              recuperação de erro de renderização
-  components/
-    panorama.tsx           navegação, busca, favoritos, tema e diálogo
-    article-card.tsx       notícia, imagem, tradução e link da fonte
-  lib/
-    types.ts               contrato de dados e categorias
-    normalize.ts           dados ausentes, URLs seguras e deduplicação
-    cache.ts               cache limitado, expiração e agrupamento de chamadas
-    storage.ts             validação e persistência local
-    demo.ts                histórias e traduções fictícias
-    errors.ts              mensagens públicas de erro
-    server/
-      config.ts            modo e variáveis de ambiente
-      news.ts              integração NYT e cache de notícias
-      deepl.ts             adaptador substituível de tradução
-      translate.ts         reconhecimento, cache e orçamento de tradução
-      limits.ts            limites por janela e instância
-      http.ts              validação HTTP, tamanho e erros
-public/
-  images/                  sete ilustrações vetoriais próprias
-  icon.svg
-tests/
-  core.test.ts             testes dos fluxos críticos
-```
-
-Os módulos do servidor importam `server-only`, impedindo sua importação acidental por componentes de navegador. A chave do NYT é enviada somente ao host oficial no servidor. A chave do DeepL vai somente no cabeçalho de autenticação. Respostas e erros públicos não incluem chaves nem detalhes de requisições externas. Nenhuma entrada do usuário controla um host externo.
-
 ## API, limites e cache
 
 `GET /api/news?section=home` devolve notícias normalizadas, modo, data de obtenção, disponibilidade de tradução e copyright. Só as categorias da lista permitida são aceitas. Conteúdo sem título ou URL HTTPS do NYT é descartado; imagens aceitas vêm de `static01.nyt.com`.
@@ -125,17 +164,17 @@ O DeepL API Free e Pro possuem cotas e cobrança distintas; traduções consomem
 
 O projeto foi preparado para hospedagem com suporte a Next.js e rotas Node.js, como a Vercel. Não funciona como exportação puramente estática, pois as chaves e integrações precisam de servidor.
 
-1. Envie a pasta do projeto a um repositório, incluindo `package-lock.json` e excluindo `.env.local`, `.next` e `node_modules`.
+1. Use o repositório [davidxavierxdplanschat/xd-news](https://github.com/davidxavierxdplanschat/xd-news), que inclui `package-lock.json`, documentação e testes. Credenciais, dependências instaladas e builds não são versionados.
 2. Importe o repositório na Vercel e selecione o preset Next.js.
 3. Configure as variáveis em Settings → Environment Variables. Para uma demonstração pública, use `NEWS_MODE=demo` sem chaves.
 4. Use `npm ci` como instalação e `npm run build` como build. Depois de configurar variáveis, faça um novo deploy.
 5. Para notícias reais, configure NYT e DeepL no servidor e valide os limites e condições vigentes das contas.
 
-Nenhum deploy público foi realizado nesta entrega local. Não é necessário contratar serviços para explorar a demonstração.
+A demonstração publicada pelo responsável pelo projeto está em [panorama-news.vercel.app](https://panorama-news.vercel.app). O domínio original foi preservado durante a atualização da identidade. Não é necessário configurar chaves para explorar o modo demonstrativo.
 
 ## Atribuição e fontes consultadas
 
-Em modo real, cada notícia mantém autoria, crédito da imagem e link para a fonte. O rodapé mostra The New York Times e o copyright recebido. A identidade Panorama e o aviso de independência evitam sugerir uma aplicação oficial. O modo demonstrativo não atribui histórias fictícias ao NYT.
+Em modo real, cada notícia mantém autoria, crédito da imagem e link para a fonte. O rodapé mostra The New York Times e o copyright recebido. A identidade XD News e o aviso de independência evitam sugerir uma aplicação oficial. O modo demonstrativo não atribui histórias fictícias ao NYT.
 
 - Especificação oficial Top Stories: https://github.com/nytimes/public_api_specs/blob/master/top_stories/top_stories_v2.json
 - Portal e documentação atual: https://developer.nytimes.com/
@@ -155,6 +194,14 @@ Os testes automatizados cobrem normalização, imagens seguras, deduplicação, 
 
 As chamadas externas são simuladas nos testes. Esta entrega não inclui credenciais NYT ou DeepL, portanto a autenticação real e a qualidade de uma tradução faturada não foram verificadas. Consulte `VALIDACAO.md` para os resultados executados.
 
-## Texto para portfólio
+## Autoria
 
-**Panorama — Notícias em português:** aplicação web editorial desenvolvida com Next.js, React, TypeScript e Tailwind CSS. Integra a API Top Stories do New York Times e tradução sob demanda para português brasileiro pelo DeepL, com credenciais protegidas no servidor, cache, controle de uso, favoritos locais, tema escuro e interface responsiva. Inclui modo demonstrativo independente e testes dos fluxos críticos de integração e segurança.
+**Criado por David Xavier, pela XD Plans.**
+
+XD News faz parte da coletânea de projetos de portfólio de David Xavier. A autoria da aplicação e de sua identidade é distinta da autoria das notícias e dos dados fornecidos pelas APIs; os créditos e as condições de cada fonte continuam aplicáveis.
+
+## Apresentação para o LinkedIn
+
+**XD News — leitor de notícias em português.** Projeto de portfólio criado por David Xavier, pela XD Plans, com Next.js, React, TypeScript e Tailwind CSS. Integra a API do New York Times e tradução sob demanda pelo DeepL, com credenciais protegidas no servidor, cache, favoritos locais, tema escuro e interface responsiva. Inclui demonstração sem credenciais e 19 testes dos fluxos críticos.
+
+[Ver apresentação completa](docs/portfolio.md) · [Abrir o repositório](https://github.com/davidxavierxdplanschat/xd-news)

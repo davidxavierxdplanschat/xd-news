@@ -26,7 +26,7 @@ export function ArticleCard({ article, sourceSection, variant = "standard", save
   const date = article.publishedAt ? new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", timeZone: "America/Sao_Paulo" }).format(new Date(article.publishedAt)) : "Data indisponível";
   return <article className={`article-card ${variant}`}>
     <figure className={`article-figure ${imageFailed || !article.image ? "no-image" : ""}`}>
-      {article.image && !imageFailed ? <img src={article.image.url} alt={article.image.caption || "Imagem da notícia"} loading={variant === "hero" ? "eager" : "lazy"} onError={() => setImageFailed(true)} /> : <div className="image-fallback"><span>P.</span><small>Panorama · Sem imagem</small></div>}
+      {article.image && !imageFailed ? <img src={article.image.url} alt={article.image.caption || "Imagem da notícia"} loading={variant === "hero" ? "eager" : "lazy"} onError={() => setImageFailed(true)} /> : <div className="image-fallback"><span>XD.</span><small>XD News · Sem imagem</small></div>}
       {variant === "hero" && <span className="figure-tag">{article.demo ? "HISTÓRIA DE EXEMPLO" : "EM DESTAQUE"}</span>}
       {article.image && !imageFailed && <figcaption>{article.image.credit || "Imagem fornecida pela fonte"}</figcaption>}
     </figure>

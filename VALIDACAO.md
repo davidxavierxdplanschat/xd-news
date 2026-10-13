@@ -26,10 +26,14 @@ O Next.js construía a URL interna com hostname diferente do endereço local abe
 ## Limitações verificáveis
 
 - Sem chaves fornecidas, não foram executadas chamadas autenticadas reais ao NYT ou DeepL. A implementação usa seus endpoints oficiais, mas autenticação, cota da conta e qualidade de tradução real precisam ser verificadas após configuração.
-- Nenhum deploy público foi realizado. O README inclui publicação em hospedagem compatível com Next.js.
+- A demonstração publicada pelo usuário foi encontrada em https://panorama-news.vercel.app. A hospedagem mantém esse endereço, enquanto a identidade foi atualizada para XD News.
 - A documentação de atribuição e FAQ no portal do NYT não ficou acessível à pesquisa nesta sessão. A especificação oficial do GitHub foi consultada; confirme termos, selo e cotas vigentes no portal ao ativar notícias reais.
 - Caches e limites em memória são por instância. Não representam controle distribuído de gastos ou de abuso.
 
 ## Observação do ambiente
 
 Os testes precisaram rodar fora da restrição de arquivos temporários do sandbox. O build usa Webpack, pois o processo filho de PostCSS do Turbopack falhou neste ambiente Windows. A compilação e os testes passaram depois desse ajuste, sem desativar verificações TypeScript.
+
+## Atualização de identidade
+
+Em 13/10/2026, o projeto foi renomeado para XD News, com autoria de David Xavier, pela XD Plans. Foram atualizados a interface, metadados, ícone, dados demonstrativos, README, apresentação para o LinkedIn e nome do pacote. O componente principal passou a se chamar `xd-news.tsx`, e os materiais de apresentação ficam em `docs/`. As chaves antigas do localStorage foram preservadas para manter favoritos e preferências existentes. Os 19 testes foram executados novamente e passaram; a compilação com a nova identidade também foi verificada.

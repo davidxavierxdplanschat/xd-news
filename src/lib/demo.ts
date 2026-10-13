@@ -15,8 +15,8 @@ const stories = [
 ] as const;
 export const demoArticles: Article[] = stories.map((s, i) => ({
   id: `demo-${i + 1}`, title: s[1], abstract: s[2], section: s[0],
-  url: null, byline: "Redação fictícia · Panorama", publishedAt: `2026-10-13T${String(14 - i).padStart(2, "0")}:00:00Z`,
-  image: { url: `/images/${s[5]}.svg`, caption: "Ilustração editorial para conteúdo fictício", credit: "Ilustração: Panorama" }, demo: true
+  url: null, byline: "Redação fictícia · XD News", publishedAt: `2026-10-13T${String(14 - i).padStart(2, "0")}:00:00Z`,
+  image: { url: `/images/${s[5]}.svg`, caption: "Ilustração editorial para conteúdo fictício", credit: "Ilustração: XD News" }, demo: true
 }));
 export const demoTranslations = new Map<string, Translation>(stories.map((s, i) => [
   `demo-${i + 1}`, { title: s[3], abstract: s[4], kind: "example" }
